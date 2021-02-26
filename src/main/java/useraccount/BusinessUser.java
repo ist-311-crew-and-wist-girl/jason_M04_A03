@@ -1,5 +1,6 @@
 package useraccount;
 
+// Import necessary modules
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -13,13 +14,16 @@ public class BusinessUser extends Account {
     private final String DatabaseName = "ACCOUNTS";
     private final String CollectionName = "BUSINESS_USER";
     private String BusinessName;
+    private String BusinessOwner;
     private String BusinessLocation;
+    private String SafetyPosting;
 
     public BusinessUser (String FirstName, String LastName, String UserName, String PhoneNumber,
-                      String Email, String Address, String BusinessName, String BusinessLocation){
+                      String Email, String Address, String BusinessName, String BusinessOwner, String BusinessLocation){
         // Call constructor of super class
         super(FirstName, LastName, UserName, PhoneNumber, Email, Address);
         this.BusinessName = BusinessName;
+        this.BusinessOwner = BusinessOwner;
         this.BusinessLocation = BusinessLocation;
     }
 
@@ -32,12 +36,28 @@ public class BusinessUser extends Account {
         BusinessName = businessName;
     }
 
+    public String getBusinessOwner() {
+        return BusinessOwner;
+    }
+
+    public void setBusinessOwner(String businessOwner) {
+        BusinessOwner = businessOwner;
+    }
+
     public String getBusinessLocation() {
         return BusinessLocation;
     }
 
     public void setBusinessLocation(String businessLocation) {
         BusinessLocation = businessLocation;
+    }
+
+    public String getSafetyPosting() {
+        return SafetyPosting;
+    }
+
+    public void writeSafetyPosting(String safetyPosting) {
+        SafetyPosting = safetyPosting;
     }
 
     @Override
@@ -62,6 +82,7 @@ public class BusinessUser extends Account {
             document.append("email", getEmail());
             document.append("address", getAddress());
             document.append("businessname", getBusinessName());
+            document.append("businessowner", getBusinessOwner());
             document.append("businesslocation", getBusinessLocation());
             document.append("account-creation-time", getTimestamp());
 
@@ -69,7 +90,7 @@ public class BusinessUser extends Account {
             table.insertOne(document);
 
         } catch (Exception e){
-            String error = "Failed to create business account! Check MongoDB instance.";
+            String error = "Failed to create user account! Check MongoDB instance.";
             System.out.println(error);
             throw e;
         }
@@ -89,7 +110,7 @@ public class BusinessUser extends Account {
             table.deleteOne(Filters.eq("userid", getAccountId()));
 
         } catch (Exception e){
-            String error = "Failed to delete business's account! Check MongoDB instance.";
+            String error = "Failed to delete user's account! Check MongoDB instance.";
             System.out.println(error);
             throw e;
         }
@@ -109,7 +130,7 @@ public class BusinessUser extends Account {
             table.updateOne(Filters.eq("userid", getAccountId()), Updates.set("firstname", getFirstName()));
 
         } catch (Exception e){
-            String error = "Failed to update business's first name! Check MongoDB instance.";
+            String error = "Failed to update user's first name! Check MongoDB instance.";
             System.out.println(error);
             throw e;
         }
@@ -129,7 +150,7 @@ public class BusinessUser extends Account {
             table.updateOne(Filters.eq("userid", getAccountId()), Updates.set("lastname", getLastName()));
 
         } catch (Exception e){
-            String error = "Failed to update business's last name! Check MongoDB instance.";
+            String error = "Failed to update user's last name! Check MongoDB instance.";
             System.out.println(error);
             throw e;
         }
@@ -149,7 +170,7 @@ public class BusinessUser extends Account {
             table.updateOne(Filters.eq("userid", getAccountId()), Updates.set("username", getUserName()));
 
         } catch (Exception e){
-            String error = "Failed to update business's user name! Check MongoDB instance.";
+            String error = "Failed to update user's user name! Check MongoDB instance.";
             System.out.println(error);
             throw e;
         }
@@ -170,7 +191,7 @@ public class BusinessUser extends Account {
                     getPhoneNumber()));
 
         } catch (Exception e){
-            String error = "Failed to update business's phone number! Check MongoDB instance.";
+            String error = "Failed to update user's phone number! Check MongoDB instance.";
             System.out.println(error);
             throw e;
         }
@@ -190,7 +211,7 @@ public class BusinessUser extends Account {
             table.updateOne(Filters.eq("userid", getAccountId()), Updates.set("email", getEmail()));
 
         } catch (Exception e){
-            String error = "Failed to update business's email! Check MongoDB instance.";
+            String error = "Failed to update user's email! Check MongoDB instance.";
             System.out.println(error);
             throw e;
         }
@@ -208,6 +229,66 @@ public class BusinessUser extends Account {
 
             // Update user's address
             table.updateOne(Filters.eq("userid", getAccountId()), Updates.set("address", getAddress()));
+
+        } catch (Exception e){
+            String error = "Failed to update user's address! Check MongoDB instance.";
+            System.out.println(error);
+            throw e;
+        }
+    }
+
+    public void UpdateBusinessName(){
+        try {
+            // Connect to database
+            MongoClient mongoClient = getConn();
+            MongoDatabase mongoDatabase = mongoClient.getDatabase(DatabaseName);
+
+            // Get collection
+            MongoCollection<Document> table = mongoDatabase.getCollection(CollectionName);
+
+            // Update business's address
+            table.updateOne(Filters.eq("userid", getAccountId()), Updates.set("businessname",
+                    getBusinessName()));
+
+        } catch (Exception e){
+            String error = "Failed to update business's name! Check MongoDB instance.";
+            System.out.println(error);
+            throw e;
+        }
+    }
+
+    public void UpdateBusinessOwner(){
+        try {
+            // Connect to database
+            MongoClient mongoClient = getConn();
+            MongoDatabase mongoDatabase = mongoClient.getDatabase(DatabaseName);
+
+            // Get collection
+            MongoCollection<Document> table = mongoDatabase.getCollection(CollectionName);
+
+            // Update business's owner
+            table.updateOne(Filters.eq("userid", getAccountId()), Updates.set("businessowner",
+                    getBusinessOwner()));
+
+        } catch (Exception e){
+            String error = "Failed to update business's owner! Check MongoDB instance.";
+            System.out.println(error);
+            throw e;
+        }
+    }
+
+    public void UpdateBusinessLocation(){
+        try {
+            // Connect to database
+            MongoClient mongoClient = getConn();
+            MongoDatabase mongoDatabase = mongoClient.getDatabase(DatabaseName);
+
+            // Get collection
+            MongoCollection<Document> table = mongoDatabase.getCollection(CollectionName);
+
+            // Update business's location
+            table.updateOne(Filters.eq("userid", getAccountId()), Updates.set("businesslocation",
+                    getBusinessLocation()));
 
         } catch (Exception e){
             String error = "Failed to update business's address! Check MongoDB instance.";

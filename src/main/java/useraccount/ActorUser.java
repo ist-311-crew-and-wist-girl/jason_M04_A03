@@ -1,6 +1,11 @@
 package useraccount;
 
+// Import local modules
+import utils.GetPublicIP;
+
 // Import necessary modules
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.model.CityResponse;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
@@ -9,15 +14,59 @@ import org.bson.Document;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import java.io.File;
+import java.net.InetAddress;
+import java.util.ArrayList;
 
 public class ActorUser extends Account {
     private final String DatabaseName = "ACCOUNTS";
     private final String CollectionName = "ACTOR_USER";
+    private ArrayList<Double> location;
+    private ArrayList<Document> history;
+    private ArrayList<Document> bookmarks;
+    private ArrayList<String> preferences;
 
     public ActorUser (String FirstName, String LastName, String UserName, String PhoneNumber,
-                      String Email, String Address){
+                      String Email, String Address) throws Exception {
         // Call constructor of super class
         super(FirstName, LastName, UserName, PhoneNumber, Email, Address);
+        this.location = GetUserLocation();
+        this.history = new ArrayList<>();
+        this.bookmarks = new ArrayList<>();
+        this.preferences = new ArrayList<>();
+    }
+
+    // Setters and Getters
+    public ArrayList<Double> getLocation() {
+        return location;
+    }
+
+    public void UpdateUserLocation(ArrayList<Double> location) {
+        this.location = location;
+    }
+
+    public ArrayList<String> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(ArrayList<String> preferences) {
+        this.preferences = preferences;
+    }
+
+    public ArrayList<Document> getBookmarks() {
+        return bookmarks;
+    }
+
+    public void setBookmarks(ArrayList<Document> bookmarks) {
+        this.bookmarks = bookmarks;
+    }
+
+    public ArrayList<Document> getHistory() {
+        return history;
+    }
+
+    public void setHistory(ArrayList<Document> history) {
+        this.history = history;
     }
 
     @Override
@@ -249,5 +298,23 @@ public class ActorUser extends Account {
         }
     }
 
+    public ArrayList<Double> GetUserLocation() throws Exception{
+        // Get devices current IP address
+        String IpAddress = GetPublicIP.getPublicIPAddress();
+        String dbLocation = "D:\\git_projects_school\\geolite\\GeoLite2-City_20210223\\GeoLite2-City.mmdb";
 
+        // Open connection to GeoLite database
+        File database = new File(dbLocation);
+        DatabaseReader reader = new DatabaseReader.Builder(database).build();
+        InetAddress ip = InetAddress.getByName(IpAddress);
+
+        // Query database
+        CityResponse response = reader.city(ip);
+
+        // Return array list with latitude and longitude
+        ArrayList<Double> temp = new ArrayList<>();
+        temp.add(response.getLocation().getLatitude());
+        temp.add(response.getLocation().getLongitude());
+        return temp;
+    }
 }
