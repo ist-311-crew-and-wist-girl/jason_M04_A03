@@ -1,8 +1,8 @@
 package useraccount;
 
 // Import necessary modules
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import utils.ConnectDB;
@@ -138,7 +138,7 @@ public abstract class Account {
 
     public abstract void UpdateAddress();
 
-    public abstract DBObject RetrieveAccountByUserName();
+    public abstract Document RetrieveAccountByUserName();
 
-    public abstract DBObject RetrieveAccountByUserId();
+    public abstract Document RetrieveAccountByUserId();
 }
