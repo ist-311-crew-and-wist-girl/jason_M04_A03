@@ -283,7 +283,7 @@ public class ActorUser extends Account {
             MongoCollection<Document> table = mongoDatabase.getCollection(CollectionName);
 
             // Grab user's document in collection
-            BasicDBObject query = new BasicDBObject("username", getAccountId());
+            BasicDBObject query = new BasicDBObject("userid", getAccountId());
             try (MongoCursor<Document> cursor = table.find(query).iterator()){
                 if (cursor.hasNext()){
                     return cursor.next();
@@ -298,7 +298,7 @@ public class ActorUser extends Account {
         }
     }
 
-    public ArrayList<Double> GetUserLocation() throws Exception{
+    public ArrayList<Double> GetUserLocation() throws Exception {
         // Get devices current IP address
         String IpAddress = GetPublicIP.getPublicIPAddress();
         String dbLocation = "D:\\git_projects_school\\geolite\\GeoLite2-City_20210223\\GeoLite2-City.mmdb";

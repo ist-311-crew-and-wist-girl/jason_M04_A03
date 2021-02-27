@@ -334,7 +334,7 @@ public class BusinessUser extends Account {
             MongoCollection<Document> table = mongoDatabase.getCollection(CollectionName);
 
             // Grab user's document in collection
-            BasicDBObject query = new BasicDBObject("username", getAccountId());
+            BasicDBObject query = new BasicDBObject("userid", getAccountId());
             try (MongoCursor<Document> cursor = table.find(query).iterator()){
                 if (cursor.hasNext()){
                     return cursor.next();
