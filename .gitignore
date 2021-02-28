@@ -23,4 +23,4 @@
 hs_err_pid*
 
 # GeoLite2 database files
-*.mmdb
+/data/GeoLite2-City.mmdb
