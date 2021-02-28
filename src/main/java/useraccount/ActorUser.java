@@ -301,7 +301,7 @@ public class ActorUser extends Account {
     public ArrayList<Double> GetUserLocation() throws Exception {
         // Get devices current IP address
         String IpAddress = GetPublicIP.getPublicIPAddress();
-        String dbLocation = "D:\\git_projects_school\\geolite\\GeoLite2-City_20210223\\GeoLite2-City.mmdb";
+        String dbLocation = "D:\\git_projects_school\\jason_M04_A03\\data\\GeoLite2-City.mmdb";
 
         // Open connection to GeoLite database
         File database = new File(dbLocation);
